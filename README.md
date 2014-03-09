@@ -11,6 +11,7 @@
     * You are able to use 'require' in your client-side code
 * Reloads your browser with LiveReload when files change
 * Runs server/server.coffee with nodemon. Restarts server when a server file changes
+
 ## Getting things up and running
 
     git clone git@github.com:leonidas/gulp-project-template.git
