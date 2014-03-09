@@ -1,5 +1,9 @@
 # Project template for [gulp.js](http://gulpjs.com/)
 
+## Branch includes
+* Project template for MEAN - stack
+* Includes one example resource (fruit)
+
 ## What it does
 * [Jade](jade-lang.com) files to HTML
 * [Stylus](http://learnboost.github.io/stylus) files to CSS
