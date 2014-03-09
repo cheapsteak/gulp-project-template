@@ -16,7 +16,8 @@
   "dependencies": {
     "coffee-script": "~1.7.1",
     "gulp-nodemon": "~1.0.0",
-    "express": "~3.5.0"
+    "express": "~3.5.0",
+    "mongoose": "~3.8.8"
   },
   "devDependencies": {
     "gulp-rename": "~0.2.1",

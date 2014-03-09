@@ -1,18 +1,23 @@
-path    = require 'path'
-express = require 'express'
+path     = require 'path'
+express  = require 'express'
+mongoose = require 'mongoose'
+
+DATABASE = 'mongodb://localhost/my-app'
 
 app = express()
 
 app.configure ->
   app.use express.static path.join __dirname, '../', 'public'
+  app.use express.json()
+  app.use express.urlencoded()
 
-app.get '/api/bananas', (req, res) ->
-  res.send [
-    id: 1
-    weight: 100
-  ,
-    id: 2
-    weight: 125
-  ]
+  mongoose.connect DATABASE
+
+app.configure 'production', ->
+  app.use express.logger()
+  app.set 'json spaces', 0
+
+# Controllers
+require('./controllers/fruit') app
 
 app.listen 9001
