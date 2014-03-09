@@ -8,7 +8,7 @@ browserify = require 'gulp-browserify'
 rename     = require 'gulp-rename'
 uglify     = require 'gulp-uglify'
 coffeeify  = require 'coffeeify'
-nodeStatic = require 'node-static'
+nodemon    = require 'gulp-nodemon'
 lr         = require 'tiny-lr'
 livereload = require 'gulp-livereload'
 reloadServer = lr()
@@ -64,12 +64,9 @@ gulp.task 'coffee', -> compileCoffee(true)
 gulp.task 'assets', -> copyAssets(true)
 
 gulp.task "server", ->
-  staticFiles = new nodeStatic.Server './public'
-  require('http').createServer (req, res) ->
-    req.addListener 'end', ->
-      staticFiles.serve req, res
-    req.resume()
-  .listen 9001
+  nodemon
+    script: 'server/server.coffee'
+    ext: 'coffee'
 
 gulp.task "watch", ->
   reloadServer.listen 35729, (err) ->
