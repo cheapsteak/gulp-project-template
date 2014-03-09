@@ -17,6 +17,13 @@ compileCoffee = (debug = false) ->
   config =
     debug: debug
     transform: ['coffeeify']
+    shim:
+      angular:
+        path: './vendor/angular/angular.js'
+        exports: 'angular'
+      'angular-route':
+        path: './vendor/angular-route/angular-route.js'
+        exports: 'ngRoute'
 
   bundle = gulp
     .src('./src/coffee/main.coffee', read: false)
