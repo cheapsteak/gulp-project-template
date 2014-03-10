@@ -14,20 +14,9 @@ livereload = require 'gulp-livereload'
 reloadServer = lr()
 
 compileCoffee = (debug = false) ->
-  config =
-    debug: debug
-    transform: ['coffeeify']
-    shim:
-      angular:
-        path: './vendor/angular/angular.js'
-        exports: 'angular'
-      'angular-route':
-        path: './vendor/angular-route/angular-route.js'
-        exports: 'ngRoute'
-
   bundle = gulp
     .src('./src/coffee/main.coffee', read: false)
-    .pipe(browserify(config))
+    .pipe(browserify(debug: debug))
     .pipe(rename('bundle.js'))
 
   bundle.pipe(uglify()) unless debug
