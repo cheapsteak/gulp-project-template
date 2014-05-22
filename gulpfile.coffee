@@ -83,6 +83,7 @@ gulp.task 'assets', ->
     .src paths.assets.source
     .pipe gulp.dest paths.assets.destination
 
+
 gulp.task "server", ->
   nodemon
     script: 'server/server.coffee'
