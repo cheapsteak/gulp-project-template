@@ -88,7 +88,7 @@ gulp.task "server", ->
   nodemon
     script: 'server/server.coffee'
     ext: 'coffee'
-
+    watch: 'server'
 gulp.task "watch", ->
   reloadServer.listen 35729
 
