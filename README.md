@@ -1,11 +1,11 @@
 # Project template for [gulp.js](http://gulpjs.com/)
 <img width="114px" height="257px" align="right" src="https://raw.githubusercontent.com/gulpjs/artwork/master/gulp-2x.png"/>
 
-## Branch includes
+### Branch includes
 * Project template for MEAN - stack
 * Includes one example resource (fruit)
 
-## What it does
+### What it does
 * [Jade](jade-lang.com) files to HTML
 * [Stylus](http://learnboost.github.io/stylus) files to CSS
 * [CoffeeScript](http://coffeescript.org/) files to Javascript through [browserify](http://browserify.org/)
@@ -26,6 +26,7 @@ open http://localhost:9001 in your browser
 ````
 
 ## CLI Commands
+
 * npm install
     * Installs server-side dependencies from NPM and client-side dependencies from Bower
 * npm start

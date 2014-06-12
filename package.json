@@ -15,9 +15,8 @@
   "author": "",
   "dependencies": {
     "coffee-script": "~1.7.1",
-    "gulp-nodemon": "~1.0.0",
-    "express": "~3.5.0",
-    "mongoose": "~3.8.8"
+    "mongoose": "~3.8.10",
+    "express": "~3.0"
   },
   "devDependencies": {
     "gulp-rename": "~0.2.1",
@@ -31,7 +30,6 @@
     "browserify": "~3.33.0",
     "browserify-shim": "~3.3.1",
     "coffeeify": "~0.6.0",
-    "ecstatic": "~0.5.1",
     "gulp": "~3.6.0",
     "gulp-angular-templatecache": "~1.1.3",
     "gulp-autoprefixer": "0.0.6",
@@ -46,7 +44,8 @@
     "gulp-util": "~2.2.9",
     "tiny-lr": "~0.0.5",
     "vinyl-source-stream": "~0.1.1",
-    "watchify": "~0.8.3"
+    "watchify": "~0.8.3",
+    "gulp-nodemon": "~1.0.3"
   },
   "browser": {
     "angular": "./bower_components/angular/angular.js",
