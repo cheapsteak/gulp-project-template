@@ -74,6 +74,7 @@ compileTemplates = ->
     .pipe gulp.dest 'tmp'
 
   es.merge main, tpls
+    .pipe livereload()
 
 gulp.task 'templates', compileTemplates
 
@@ -87,7 +88,7 @@ gulp.task 'styles', ->
   styles = styles.pipe(CSSmin()) if production
 
   styles.pipe gulp.dest paths.styles.destination
-    .pipe livereload reloadServer
+    .pipe livereload()
 
 gulp.task 'assets', ->
   gulp
@@ -100,7 +101,7 @@ gulp.task 'server', ->
     .listen 9001
 
 gulp.task "watch", ->
-  reloadServer.listen 35729
+  livereload.listen()
 
   gulp.watch paths.styles.watch, ['styles']
   gulp.watch paths.assets.watch, ['assets']
@@ -117,7 +118,7 @@ gulp.task "watch", ->
 
     build
       .pipe gulp.dest paths.scripts.destination
-      .pipe(livereload(reloadServer))
+      .pipe(livereload())
 
   .emit 'update'
 
