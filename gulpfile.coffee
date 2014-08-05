@@ -6,7 +6,6 @@ gulp       = require 'gulp'
 gutil      = require 'gulp-util'
 jade       = require 'gulp-jade'
 livereload = require 'gulp-livereload'
-lr         = require 'tiny-lr'
 path       = require 'path'
 plumber    = require 'gulp-plumber'
 prefix     = require 'gulp-autoprefixer'
@@ -18,7 +17,6 @@ templates  = require 'gulp-angular-templatecache'
 uglify     = require 'gulp-uglify'
 watchify   = require 'watchify'
 es         = require 'event-stream'
-reloadServer = lr()
 
 production = process.env.NODE_ENV is 'production'
 
@@ -69,7 +67,7 @@ compileTemplates = ->
     .pipe gulp.dest paths.templates.destination
 
   tpls = gulp
-    .src [paths.templates.source, '!#{paths.templates.main}']
+    .src [paths.templates.source, "!#{paths.templates.main}"]
     .pipe jade pretty: not production
     .on 'error', handleError
     .pipe templates 'templates.js'
