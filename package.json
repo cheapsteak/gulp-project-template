@@ -17,10 +17,9 @@
     "coffee-script": "~1.7.1"
   },
   "devDependencies": {
+    "browserify-plain-jade": "~0.2.0",
     "gulp-rename": "~1.2.0",
     "gulp-uglify": "~0.1.0",
-    "gulp-angular-templatecache": "~1.1.3",
-    "gulp-util": "~2.2.9",
     "event-stream": "~3.1.5",
     "gulp-stylus": "1.0.2",
     "gulp-jade": "~0.6.0",
@@ -33,10 +32,11 @@
     "gulp-streamify": "0.0.5",
     "vinyl-source-stream": "~0.1.1",
     "coffeeify": "~0.6.0",
-    "gulp": "~3.8.1",
     "watchify": "~0.10.2",
     "ecstatic": "~0.5.3",
-    "gulp-minify-css": "~0.3.5"
+    "gulp-minify-css": "~0.3.7",
+    "gulp": "~3.8.7",
+    "gulp-util": "~3.0.0"
   },
   "browser": {
     "angular": "./bower_components/angular/angular.js",
@@ -49,7 +49,8 @@
   "browserify": {
     "transform": [
       "coffeeify",
-      "browserify-shim"
+      "browserify-shim",
+      "browserify-plain-jade"
     ]
   }
 }

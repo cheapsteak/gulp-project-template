@@ -13,7 +13,6 @@ rename     = require 'gulp-rename'
 source     = require 'vinyl-source-stream'
 streamify  = require 'gulp-streamify'
 stylus     = require 'gulp-stylus'
-templates  = require 'gulp-angular-templatecache'
 uglify     = require 'gulp-uglify'
 watchify   = require 'watchify'
 es         = require 'event-stream'
@@ -22,17 +21,16 @@ production = process.env.NODE_ENV is 'production'
 
 paths =
   scripts:
-    source: './src/coffee/main.coffee'
+    source: './src/main.coffee'
     destination: './public/js/'
     filename: 'bundle.js'
   templates:
-    main: './src/jade/index.jade'
-    source: './src/jade/**/*.jade'
-    watch: './src/jade/**/*.jade'
+    main: './src/index.jade'
+    watch: './src/**/*.jade'
     destination: './public/'
   styles:
-    source: './src/stylus/style.styl'
-    watch: './src/stylus/*.styl'
+    source: './src/style.styl'
+    watch: './src/**/*.styl'
     destination: './public/css/'
   assets:
     source: './src/assets/**/*.*'
@@ -59,24 +57,16 @@ gulp.task 'scripts', ['templates'], ->
   build
     .pipe gulp.dest paths.scripts.destination
 
-compileTemplates = ->
-  main = gulp
+gulp.task 'templates', ->
+  pipeline = gulp
     .src paths.templates.main
     .pipe jade pretty: not production
     .on 'error', handleError
     .pipe gulp.dest paths.templates.destination
 
-  tpls = gulp
-    .src [paths.templates.source, "!#{paths.templates.main}"]
-    .pipe jade pretty: not production
-    .on 'error', handleError
-    .pipe templates 'templates.js'
-    .pipe gulp.dest 'tmp'
+  pipeline = pipeline.pipe livereload() unless production
 
-  es.merge main, tpls
-    .pipe livereload()
-
-gulp.task 'templates', compileTemplates
+  pipeline
 
 gulp.task 'styles', ->
   styles = gulp
@@ -121,10 +111,6 @@ gulp.task "watch", ->
       .pipe(livereload())
 
   .emit 'update'
-
-  gulp.watch paths.templates.watch, ->
-    compileTemplates().on 'end', ->
-      bundle.emit 'update'
 
 gulp.task "build", ['scripts', 'templates', 'styles', 'assets']
 gulp.task "default", ["build", "watch", "server"]
