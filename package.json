@@ -1,12 +1,15 @@
 {
   "name": "gulp-template",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Project template for gulp.js",
+  "author": "Riku Rouvila <riku.rouvila@leonidasoy.fi>",
+  "license": "MIT",
   "main": "gulpfile.js",
   "scripts": {
     "prepublish": "bower install",
     "start": "gulp",
-    "build": "gulp build"
+    "build": "gulp build",
+    "test": "karma start test/karma.conf.js"
   },
   "keywords": [
     "gulp",
@@ -32,6 +35,10 @@
     "gulp-streamify": "0.0.5",
     "vinyl-source-stream": "~0.1.1",
     "coffeeify": "~0.6.0",
+    "karma": "~0.12.21",
+    "karma-jasmine": "~0.1.5",
+    "karma-chrome-launcher": "~0.1.4",
+    "karma-coffee-preprocessor": "~0.2.1",
     "watchify": "~0.10.2",
     "ecstatic": "~0.5.3",
     "gulp-minify-css": "~0.3.7",
