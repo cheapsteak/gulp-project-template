@@ -15,7 +15,6 @@
     "gulp",
     "template"
   ],
-  "author": "",
   "dependencies": {
     "coffee-script": "~1.7.1"
   },
@@ -43,21 +42,22 @@
     "ecstatic": "~0.5.3",
     "gulp-minify-css": "~0.3.7",
     "gulp": "~3.8.7",
-    "gulp-util": "~3.0.0"
+    "gulp-util": "~3.0.0",
+    "deamdify": "^0.1.1",
+    "debowerify": "~0.8.2"
   },
   "browser": {
     "angular": "./bower_components/angular/angular.js",
     "angular-route": "./bower_components/angular-route/angular-route.js"
   },
-  "browserify-shim": {
-    "angular": "angular",
-    "angular-route": "ngRoute"
-  },
+  "browserify-shim": {},
   "browserify": {
     "transform": [
       "coffeeify",
       "browserify-shim",
-      "browserify-plain-jade"
+      "browserify-plain-jade",
+      "debowerify",
+      "deamdify"
     ]
   }
 }
