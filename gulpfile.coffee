@@ -1,20 +1,21 @@
 browserify = require 'browserify'
-coffeeify  = require 'coffeeify'
+chalk      = require 'chalk'
 CSSmin     = require 'gulp-minify-css'
+es         = require 'event-stream'
 gulp       = require 'gulp'
 gutil      = require 'gulp-util'
 jade       = require 'gulp-jade'
-nodemon    = require 'gulp-nodemon'
 livereload = require 'gulp-livereload'
+nodemon    = require 'gulp-nodemon'
 path       = require 'path'
 prefix     = require 'gulp-autoprefixer'
+prettyTime = require 'pretty-hrtime'
 rename     = require 'gulp-rename'
 source     = require 'vinyl-source-stream'
 streamify  = require 'gulp-streamify'
 stylus     = require 'gulp-stylus'
 uglify     = require 'gulp-uglify'
 watchify   = require 'watchify'
-es         = require 'event-stream'
 
 production = process.env.NODE_ENV is 'production'
 
@@ -46,8 +47,9 @@ gulp.task 'scripts', ['templates'], ->
   bundle = browserify
     entries: [paths.scripts.source]
     extensions: ['.coffee']
+    debug: not production
 
-  build = bundle.bundle(debug: not production)
+  build = bundle.bundle()
     .on 'error', handleError
     .pipe source paths.scripts.filename
 
@@ -64,20 +66,22 @@ gulp.task 'templates', ->
     .on 'error', handleError
     .pipe gulp.dest paths.templates.destination
 
-  pipeline = pipeline.pipe livereload() unless production
+  pipeline = pipeline.pipe livereload(auto: false) unless production
 
   pipeline
 
 gulp.task 'styles', ->
   styles = gulp
     .src paths.styles.source
-    .pipe(stylus({set: ['include css']}))
+    .pipe stylus
+      'include css': true
+
     .on 'error', handleError
     .pipe prefix 'last 2 versions', 'Chrome 34', 'Firefox 28', 'iOS 7'
 
   styles = styles.pipe(CSSmin()) if production
   styles = styles.pipe gulp.dest paths.styles.destination
-  styles = styles.pipe livereload() unless production
+  styles = styles.pipe livereload(auto: false) unless production
   styles
 
 gulp.task 'assets', ->
@@ -85,24 +89,30 @@ gulp.task 'assets', ->
     .src paths.assets.source
     .pipe gulp.dest paths.assets.destination
 
-gulp.task "server", ->
+gulp.task 'server', ->
   nodemon
     script: 'server/server.coffee'
     ext: 'coffee'
     watch: 'server'
 
-gulp.task "watch", ->
+gulp.task 'watch', ->
   livereload.listen()
 
   gulp.watch paths.styles.watch, ['styles']
   gulp.watch paths.assets.watch, ['assets']
 
-  bundle = watchify
+  bundle = watchify browserify
     entries: [paths.scripts.source]
     extensions: ['.coffee']
+    debug: not production
+    cache: {}
+    packageCache: {}
+    fullPaths: true
 
   bundle.on 'update', ->
-    build = bundle.bundle(debug: not production)
+    gutil.log "Starting '#{chalk.cyan 'rebundle'}'..."
+    start = process.hrtime()
+    build = bundle.bundle()
       .on 'error', handleError
 
       .pipe source paths.scripts.filename
@@ -110,8 +120,12 @@ gulp.task "watch", ->
     build
       .pipe gulp.dest paths.scripts.destination
       .pipe(livereload())
+    gutil.log "Finished '#{chalk.cyan 'rebundle'}' after #{chalk.magenta prettyTime process.hrtime start}"
 
   .emit 'update'
 
-gulp.task "build", ['scripts', 'templates', 'styles', 'assets']
-gulp.task "default", ["build", "watch", "server"]
+gulp.task 'no-js', ['templates', 'styles', 'assets']
+gulp.task 'build', ['scripts', 'no-js']
+# scripts and watch conflict and will produce invalid js upon first run
+# which is why the no-js task exists.
+gulp.task 'default', ['watch', 'no-js', 'server']

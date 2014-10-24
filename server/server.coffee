@@ -1,19 +1,19 @@
-path     = require 'path'
-express  = require 'express'
-mongoose = require 'mongoose'
+bodyParser = require 'body-parser'
+express    = require 'express'
+mongoose   = require 'mongoose'
+path       = require 'path'
 
 DATABASE = 'mongodb://localhost/my-app'
 
 app = express()
 
-app.configure ->
-  app.use express.static path.join __dirname, '../', 'public'
-  app.use express.json()
-  app.use express.urlencoded()
+app.use express.static path.join __dirname, '../', 'public'
+app.use bodyParser.json()
+app.use bodyParser.urlencoded(extended: false)
 
-  mongoose.connect DATABASE
+mongoose.connect DATABASE
 
-app.configure 'production', ->
+if process.env.NODE_ENV == 'production'
   app.use express.logger()
   app.set 'json spaces', 0
 
