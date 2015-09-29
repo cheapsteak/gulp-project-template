@@ -23,7 +23,6 @@ var uglify = require('gulp-uglify');
 var watchify = require('watchify');
 var watch = require('gulp-watch');
 var inject = require('gulp-inject');
-var runSequence = require('run-sequence');
 
 /*eslint "no-process-env":0 */
 var production = process.env.NODE_ENV === 'production';
@@ -95,7 +94,7 @@ gulp.task('scripts', function() {
   return pipeline.pipe(gulp.dest(config.scripts.destination));
 });
 
-gulp.task('templates', function() {
+gulp.task('templates', production ? ['styles', 'scripts'] : [], function() {
   var resources = gulp.src(config.inject.resources, {read: false});
 
   var pipeline = gulp.src(config.templates.source)
@@ -189,11 +188,5 @@ gulp.task('watch', function() {
   }).emit('update');
 });
 
-gulp.task('build', function() {
-  rimraf.sync(config.destination);
-  runSequence(['styles', 'assets', 'scripts'], 'templates');
-});
-
-gulp.task('default', function () {
-  runSequence(['styles', 'assets'], 'templates', ['watch', 'server'])
-});
+gulp.task('build', ['styles', 'assets', 'scripts', 'templates']);
+gulp.task('default', ['styles', 'assets', 'templates', 'watch', 'server']);
