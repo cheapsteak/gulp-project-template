@@ -6,8 +6,9 @@
   "license": "MIT",
   "main": "gulpfile.js",
   "scripts": {
-    "start": "gulp",
-    "build": "gulp build",
+    "gulp": "babel gulpfile.js -o .gulpfile.js && gulp --gulpfile .gulpfile.js",
+    "start": "npm run gulp",
+    "build": "npm run gulp build",
     "test": "mocha src/**/__tests__/*.js --compilers js:babel/register --require test/test-helper"
   },
   "keywords": [
