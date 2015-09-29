@@ -22,6 +22,8 @@ var stylus = require('gulp-stylus');
 var uglify = require('gulp-uglify');
 var watchify = require('watchify');
 var watch = require('gulp-watch');
+var inject = require('gulp-inject');
+var runSequence = require('run-sequence');
 
 /*eslint "no-process-env":0 */
 var production = process.env.NODE_ENV === 'production';
@@ -51,10 +53,8 @@ var config = {
     watch: './src/assets/**/*.*',
     destination: './public/'
   },
-  revision: {
-    source: ['./public/**/*.css', './public/**/*.js'],
-    base: path.join(__dirname, 'public'),
-    destination: './public/'
+  inject: {
+    resources: ['./public/**/*.css', './public/**/*.js']
   }
 };
 
@@ -83,7 +83,9 @@ gulp.task('scripts', function() {
     .pipe(source(config.scripts.filename));
 
   if(production) {
-    pipeline = pipeline.pipe(streamify(uglify()));
+    pipeline = pipeline
+      .pipe(streamify(uglify()))
+      .pipe(streamify(rev()));
   } else {
     pipeline = pipeline.pipe(transform(function() {
       return exorcist(config.scripts.destination + config.scripts.filename + '.map');
@@ -94,11 +96,14 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('templates', function() {
+  var resources = gulp.src(config.inject.resources, {read: false});
+
   var pipeline = gulp.src(config.templates.source)
   .pipe(jade({
     pretty: !production
   }))
   .on('error', handleError)
+  .pipe(inject(resources, {ignorePath: 'public', removeTags: true}))
   .pipe(gulp.dest(config.templates.destination));
 
   if(production) {
@@ -125,7 +130,9 @@ gulp.task('styles', function() {
   .on('error', handleError)
   .pipe(prefix('last 2 versions', 'Chrome 34', 'Firefox 28', 'iOS 7'));
 
-  if(!production) {
+  if(production) {
+    pipeline = pipeline.pipe(rev());
+  } else {
     pipeline = pipeline.pipe(sourcemaps.write('.'));
   }
 
@@ -182,31 +189,11 @@ gulp.task('watch', function() {
   }).emit('update');
 });
 
-var buildTasks = ['templates', 'styles', 'assets'];
-
-gulp.task('revision', buildTasks.concat(['scripts']), function() {
-  return gulp.src(config.revision.source, {base: config.revision.base})
-    .pipe(rev())
-    .pipe(gulp.dest(config.revision.destination))
-    .pipe(rev.manifest())
-    .pipe(gulp.dest('./'));
-});
-
-gulp.task('replace-revision-references', ['revision', 'templates'], function() {
-  var revisions = require('./rev-manifest.json');
-
-  var pipeline = gulp.src(config.templates.revision);
-
-  pipeline = Object.keys(revisions).reduce(function(stream, key) {
-    return stream.pipe(replace(key, revisions[key]));
-  }, pipeline);
-
-  return pipeline.pipe(gulp.dest(config.templates.destination));
-});
-
 gulp.task('build', function() {
   rimraf.sync(config.destination);
-  gulp.start(buildTasks.concat(['scripts', 'revision', 'replace-revision-references']));
+  runSequence(['styles', 'assets', 'scripts'], 'templates');
 });
 
-gulp.task('default', buildTasks.concat(['watch', 'server']));
+gulp.task('default', function () {
+  runSequence(['styles', 'assets'], 'templates', ['watch', 'server'])
+});

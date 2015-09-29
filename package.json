@@ -27,6 +27,7 @@
     "gulp": "~3.8.1",
     "gulp-autoprefixer": "1.0.1",
     "gulp-duration": "0.0.0",
+    "gulp-inject": "^3.0.0",
     "gulp-jade": "~0.9.0",
     "gulp-replace": "^0.5.3",
     "gulp-rev": "^4.0.0",
@@ -40,13 +41,19 @@
     "mocha": "^2.2.5",
     "node-notifier": "^4.2.1",
     "rimraf": "^2.3.4",
+    "run-sequence": "^1.1.4",
     "vinyl-source-stream": "~1.0.0",
     "vinyl-transform": "^1.0.0",
     "watchify": "^3.2.1"
   },
   "browserify": {
     "transform": [
-      ["babelify", {"stage": 0}]
+      [
+        "babelify",
+        {
+          "stage": 0
+        }
+      ]
     ]
   }
 }
