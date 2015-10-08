@@ -1,8 +1,15 @@
-import {getCommits, getRepo} from './services/github';
-import {render} from './components/repository';
+import Vue from 'vue';
+global.Vue = Vue;
 
-Promise.all([getRepo(), getCommits()])
-.then(([repository, commits]) => {
-  document.body.innerHTML = render(repository, commits);
+import animate from 'gsap-promise';
+global.animate = animate;
+
+
+const App = Vue.extend({
+  template: `<component is="home"></component>`,
+  components: {
+    home: require('./home/home.js')
+  }
 });
 
+const app = new App({el: 'body', replace: false});
