@@ -7,16 +7,22 @@ const js = input => hljs.highlight('js', input).value;
 const baseButton = `
 <sample-button
   action="{{onClick}}"
-  text="ACTION"
+  text="BUTTON"
   >
 </sample-button>
+`;
+
+const importJs = `
+components: {
+  'sample-button': require('sample-components/button/button.vue'),
+}
 `;
 
 const buttonWithArrow = `
 <sample-button
   has-arrow="true"
   action="{{onClick}}"
-  text="ACTION"
+  text="BUTTON"
   >
 </sample-button>
 `;
@@ -36,6 +42,7 @@ const buttonWithDynamicText = `
   >
 </sample-button>
 <br><br>
+
 <sample-button
   icon-partial="icon-flag"
   action="{{incrementTextIndex}}"
@@ -48,73 +55,74 @@ const extendedButton = `
 <button v-on="click: showButton = !showButton">
   toggle
 </button>
+<br><br>
 
 <extended-button
   v-show="showButton"
   v-transition="animateInOut"
-  text="Always Arrow"
+  text="Animate In/Out"
   >
 </extended-button>
 `
 
+const extendedButtonJs = `
+import sampleButton from 'sample-components/button/button.vue';
+
+export default sampleButton.extend({
+  methods: {
+    animateIn () {
+      return animate.fromTo(this.$el, 0.5, {opacity: '0'}, {opacity: '1'});
+    },
+    animateOut () {
+      return animate.to(this.$el, 0.5, {opacity: '0'});
+    }
+  }
+});
+`;
+
 const topMenu = `
 <top-menu
   sections="{{ topMenuSections }}"
-  selected="{{ topMenuSections[0] }}">
+  selected="{{@ selectedSection }}">
 </top-menu>
+
+selected: {{selectedSection | json}}
 `;
 
-let template = `
-<table class="all-the-things">
-  <tr>
-    <td class="source">
-      <pre v-pre>${html(baseButton)}</pre>
-    </td>
-    <td>
-      ${baseButton}
-    </td>
-  </tr>
-  <tr>
-    <td class="source">
-      <pre v-pre>${html(buttonWithArrow)}</pre>
-    </td>
-    <td>
-      ${buttonWithArrow}
-    </td>
-  </tr>
-  <tr>
-    <td class="source">
-      <pre v-pre>${html(buttonWithIcon)}</pre>
-    </td>
-    <td>
-      ${buttonWithIcon}
-    </td>
-  </tr>
-  <tr>
-    <td class="source">
-      <pre v-pre>${html(buttonWithDynamicText)}</pre>
-    </td>
-    <td>
-      ${buttonWithDynamicText}
-    </td>
-  </tr>
-  <tr>
-    <td class="source">
-      <pre v-pre>${html(extendedButton)}</pre>
-    </td>
-    <td>
-      ${extendedButton}
-    </td>
-  </tr>
-  <tr>
-    <td class="source">
-      <pre v-pre>${html(topMenu)}</pre>
-    </td>
-    <td>
-      ${topMenu}
-    </td>
-  </tr>
-</table>
+const template = `
+<ul class="all-the-things">
+  <li>
+    ${baseButton}
+  </li>
+  <li>
+    ${baseButton}
+    <pre v-pre>
+    ${js(importJs)}
+    ${html(baseButton)}
+    </pre>
+  </li>
+  <li>
+    <pre v-pre>${html(buttonWithArrow)}</pre>
+    ${buttonWithArrow}
+  </li>
+  <li>
+    <pre v-pre>${html(buttonWithIcon)}</pre>
+    ${buttonWithIcon}
+  </li>
+  <li>
+    <pre v-pre>${html(buttonWithDynamicText)}</pre>
+    ${buttonWithDynamicText}
+  </li>
+  <li>
+    <pre v-pre>${js(extendedButtonJs)}
+    ${html(extendedButton)}</pre>
+    ${extendedButton}
+  </li>
+  <li>
+    <pre v-pre>${html(topMenu)}</pre>
+    ${topMenu}
+  </li>
+</ul>
 `;
 
 export default template;

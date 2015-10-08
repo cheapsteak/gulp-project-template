@@ -5,18 +5,21 @@ Vue.partial('icon-drafts', require('../../assets/svgs/drafts.svg'));
 Vue.partial('icon-flag', require('../../assets/svgs/flag.svg')); 
 Vue.partial('icon-gps_fixed', require('../../assets/svgs/gps_fixed.svg')); 
 
+const sections = [
+  { id: 'create', svg: 'icon-create' },
+  { id: 'draft', svg: 'icon-drafts' },
+  { id: 'flag', svg: 'icon-flag' }
+];
+
 export default Vue.extend({
   template: require('./home-template.js'),
   data () {
     return {
       textIndex: 0,
       texts: ['my text might change', 'notice how width adjusts automatically to text content', 'potato'],
-      showButton: false,
-      topMenuSections: [
-        { id: 'create', svg: 'icon-create' },
-        { id: 'draft', svg: 'icon-drafts' },
-        { id: 'flag', svg: 'icon-flag' }
-      ]
+      showButton: true,
+      topMenuSections: sections,
+      selectedSection: sections[0]
     };
   },
   methods: {
