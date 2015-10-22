@@ -8,7 +8,8 @@ Vue.partial('icon-gps_fixed', require('../../assets/svgs/gps_fixed.svg'));
 const sections = [
   { id: 'create', svg: 'icon-create' },
   { id: 'draft', svg: 'icon-drafts' },
-  { id: 'flag', svg: 'icon-flag' }
+  { id: 'flag', svg: 'icon-flag' },
+  // { id: 'flag', svg: 'icon-flag' },
 ];
 
 export default Vue.extend({

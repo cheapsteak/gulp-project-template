@@ -6,10 +6,11 @@ global.animate = animate;
 
 
 const App = Vue.extend({
-  template: `<component is="home"></component>`,
+  template: `<component is="infinite-scroll"></component>`,
   components: {
-    home: require('./home/home.js')
+    // home: require('./home/home.js'),
+    'infinite-scroll': require('./infinite-scroll/infinite-scroll.js')
   }
 });
 
-const app = new App({el: 'body', replace: false});
+new App({el: 'body', replace: false});

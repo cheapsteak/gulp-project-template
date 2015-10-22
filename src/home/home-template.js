@@ -95,7 +95,6 @@ const template = `
     ${baseButton}
   </li>
   <li>
-    ${baseButton}
     <pre v-pre>
     ${js(importJs)}
     ${html(baseButton)}

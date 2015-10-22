@@ -19,13 +19,13 @@
     "gsap-promise": "^1.4.1",
     "highlight.js": "^8.8.0",
     "lodash": "^3.9.1",
-    "vue": "^0.12.16"
+    "vue": "^1.0.0-alpha.8"
   },
   "devDependencies": {
     "babel": "^5.8.23",
     "babel-core": "^5.8.25",
     "babel-eslint": "^4.1.3",
-    "babelify": "^6.1.1",
+    "babelify": "^6.3.0",
     "browser-sync": "^2.9.4",
     "browserify": "^10.2.1",
     "chai": "^3.0.0",
